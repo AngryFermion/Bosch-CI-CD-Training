@@ -1,0 +1,39 @@
+image: python:3.11
+stages:          # List of stages for jobs, and their order of execution
+  - build
+  - test
+  - deploy
+
+build-job:       # This job runs in the build stage, which runs first.
+  stage: build
+  script:
+    - echo "Compiling the code..."
+    - echo "Compile complete."
+    - git clone https://github.com/AngryFermion/Bosch-CI-CD-Training.git
+    - cd Bosch-CI-CD-Training
+    - ls
+    - cd Demo1-Continuous-Integration
+    - ls
+    - python main.py > build_output.txt
+  artifacts:
+    name: "build-artifacts-output"
+    paths:
+      - Bosch-CI-CD-Training/Demo1-Continuous-Integration/build_output.txt
+    expire_in: 1 week
+    
+test-job:
+  stage: test
+  script:
+    - echo "Fetching source code for tests..."
+    - git clone https://github.com/AngryFermion/Bosch-CI-CD-Training.git
+    - cd Bosch-CI-CD-Training/Demo1-Continuous-Integration
+    - pip install pytest
+
+    - pytest test_add.py -v | tee test_report.txt
+    - pwd
+    - ls -la
+  artifacts:
+    name: "test-$CI_COMMIT_SHORT_SHA"
+    paths:
+      - Bosch-CI-CD-Training/Demo1-Continuous-Integration/test_report.txt
+    expire_in: 1 week

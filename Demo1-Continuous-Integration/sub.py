@@ -1,8 +1,4 @@
-add.py
-
-'''
-
-def add(a, b):
+def sub(a, b):
     """
     Add two numbers together.
 
@@ -13,5 +9,4 @@ def add(a, b):
     Returns:
         The sum of a and b
     """
-    return a + b
-'''
+    return a - b
