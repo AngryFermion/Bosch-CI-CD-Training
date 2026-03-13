@@ -1,0 +1,29 @@
+image: python:3.11
+
+stages:
+  - build
+  - test
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.pip-cache"
+
+cache:
+  key: pip-cache
+  paths:
+    - .pip-cache/
+
+build-job:
+  stage: build
+  script:
+    - echo "Build stage started"
+    - pip install --cache-dir $PIP_CACHE_DIR requests numpy pytest
+    - echo "Installed dependencies"
+    - ls -la .pip-cache || true
+
+test-job:
+  stage: test
+  script:
+    - echo "Test stage started"
+    - pip install --cache-dir $PIP_CACHE_DIR requests numpy pytest
+    - echo "Dependencies should now come from cache"
+    - python -c "import requests, numpy; print('Libraries loaded successfully')" 

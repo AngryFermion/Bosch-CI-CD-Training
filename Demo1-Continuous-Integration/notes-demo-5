@@ -1,0 +1,32 @@
+image: python:3.11
+stages:          # List of stages for jobs, and their order of execution
+  - build
+  - test
+  - deploy
+
+build-job-A:       # This job runs in the build stage, which runs first.
+  stage: build
+  script:
+    - echo "Executing Build Stage - Job A" > log.txt
+    - ls
+  artifacts:
+    name: build-log
+    paths:
+      - log.txt
+    expire_in: 30 days
+    
+
+build-job-B:       # This job runs in the build stage, which runs first.
+  stage: build
+  script:
+    - echo "Executing Build Stage - Job B"
+    
+test-job:
+  stage: test
+  script:
+    - echo "Executing test stage"
+
+deploy-job:
+  stage: deploy
+  script:
+    - echo "Executing Build stage"
